@@ -10,10 +10,7 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     document.getElementById("openFormButton").onclick = openDataForm;
     document.getElementById("openFCFButton").onclick = openFCFForm;
-    window.showTaskpane = function() {
-      Office.context.ui.displayDialogAsync('https://lubasiempirica.github.io/PAM_Addin/taskpane.html', { height: 50, width: 50 });
-
-  }
+    Office.Addin.showAsTaskpane();
 });
 
 function openDataForm() {
@@ -38,9 +35,6 @@ function openFCFForm() {
   );
 }
 
-function showTaskpane() {
-  Office.context.ui.displayDialogAsync('https://lubasiempirica.github.io/PAM_Addin/taskpane.html', { height: 50, width: 50 });
-}
 
 function messageHandler(arg) {
   console.log(arg.message);
