@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance and Reinsurance Variables</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="fcfstyles.css">
+</head>
+
+<body>
+    <h1>Insurance and Reinsurance Variables</h1>
+
+    <!-- Insurance Variables Form -->
+    <div x-data="{
+        formDataInsurance: {
+            'Premiums': [],
+            'Claims': [],
+            'Admin': [],
+            'Acq': []
+        },
+        newValuesInsurance: {
+            'Premiums': '',
+            'Claims': '',
+            'Admin': '',
+            'Acq': ''
+        },
+        loadFormDataInsurance() {
+            fetch('http://localhost:5000/get-insurance-data')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch insurance data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.formDataInsurance.Premiums = data.Premiums;
+                    this.formDataInsurance.Claims = data.Claims;
+                    this.formDataInsurance.Admin = data.Admin;
+                    this.formDataInsurance.Acq = data.Acq;
+                })
+                .catch(error => {
+                    console.error('Error loading insurance data:', error);
+                });
+        },
+        addRowInsurance() {
+            this.formDataInsurance.Premiums.push(this.newValuesInsurance.Premiums);
+            this.formDataInsurance.Claims.push(this.newValuesInsurance.Claims);
+            this.formDataInsurance.Admin.push(this.newValuesInsurance.Admin);
+            this.formDataInsurance.Acq.push(this.newValuesInsurance.Acq);
+            // Clear newValuesInsurance after adding row
+            this.newValuesInsurance.Premiums = '';
+            this.newValuesInsurance.Claims = '';
+            this.newValuesInsurance.Admin = '';
+            this.newValuesInsurance.Acq = '';
+        },
+        removeRowInsurance(index) {
+            this.formDataInsurance.Premiums.splice(index, 1);
+            this.formDataInsurance.Claims.splice(index, 1);
+            this.formDataInsurance.Admin.splice(index, 1);
+            this.formDataInsurance.Acq.splice(index, 1);
+        },
+        submitInsuranceData() {
+            fetch('http://localhost:5000/update-insurance-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.formDataInsurance)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Insurance data updated successfully');
+                console.log(data); // Optional: Log the response data
+            })
+            .catch(error => {
+                alert('Error updating insurance data: ' + error.message);
+                console.error('Error:', error);
+            });
+        }
+    }" x-init="loadFormDataInsurance()">
+        <h2>Insurance Variables</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Premiums</th>
+                    <th>Claims</th>
+                    <th>Admin</th>
+                    <th>Acq</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="(value, index) in formDataInsurance.Premiums" :key="index">
+                    <tr>
+                        <td><input x-model="formDataInsurance.Premiums[index]" type="text"></td>
+                        <td><input x-model="formDataInsurance.Claims[index]" type="text"></td>
+                        <td><input x-model="formDataInsurance.Admin[index]" type="text"></td>
+                        <td><input x-model="formDataInsurance.Acq[index]" type="text"></td>
+                        <td><button type="button" @click="removeRowInsurance(index)">Remove</button></td>
+                    </tr>
+                </template>
+                <tr>
+                    <td><input type="text" x-model="newValuesInsurance.Premiums" placeholder="Enter Premiums"></td>
+                    <td><input type="text" x-model="newValuesInsurance.Claims" placeholder="Enter Claims"></td>
+                    <td><input type="text" x-model="newValuesInsurance.Admin" placeholder="Enter Admin"></td>
+                    <td><input type="text" x-model="newValuesInsurance.Acq" placeholder="Enter Acq"></td>
+                    <td><button type="button" @click="addRowInsurance()">Add Row</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <button @click="submitInsuranceData()" class="btn btn-primary">Update Insurance Data</button>
+        </div>
+    </div>
+
+    <!-- Reinsurance Variables Form -->
+    <div x-data="{
+        formDataReinsurance: {
+            'Premiums': [],
+            'Claims': [],
+            'Admin': [],
+            'Acq': []
+        },
+        newValuesReinsurance: {
+            'Premiums': '',
+            'Claims': '',
+            'Admin': '',
+            'Acq': ''
+        },
+        loadFormDataReinsurance() {
+            fetch('http://localhost:5000/get-reinsurance-data')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch reinsurance data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.formDataReinsurance.Premiums = data.Premiums;
+                    this.formDataReinsurance.Claims = data.Claims;
+                    this.formDataReinsurance.Admin = data.Admin;
+                    this.formDataReinsurance.Acq = data.Acq;
+                })
+                .catch(error => {
+                    console.error('Error loading reinsurance data:', error);
+                });
+        },
+        addRowReinsurance() {
+            this.formDataReinsurance.Premiums.push(this.newValuesReinsurance.Premiums);
+            this.formDataReinsurance.Claims.push(this.newValuesReinsurance.Claims);
+            this.formDataReinsurance.Admin.push(this.newValuesReinsurance.Admin);
+            this.formDataReinsurance.Acq.push(this.newValuesReinsurance.Acq);
+            // Clear newValuesReinsurance after adding row
+            this.newValuesReinsurance.Premiums = '';
+            this.newValuesReinsurance.Claims = '';
+            this.newValuesReinsurance.Admin = '';
+            this.newValuesReinsurance.Acq = '';
+        },
+        removeRowReinsurance(index) {
+            this.formDataReinsurance.Premiums.splice(index, 1);
+            this.formDataReinsurance.Claims.splice(index, 1);
+            this.formDataReinsurance.Admin.splice(index, 1);
+            this.formDataReinsurance.Acq.splice(index, 1);
+        },
+        submitReinsuranceData() {
+            fetch('http://localhost:5000/update-reinsurance-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.formDataReinsurance)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Reinsurance data updated successfully');
+                console.log(data); // Optional: Log the response data
+            })
+            .catch(error => {
+                alert('Error updating reinsurance data: ' + error.message);
+                console.error('Error:', error);
+            });
+        }
+    }" x-init="loadFormDataReinsurance()">
+        <h2>Reinsurance Variables</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Premiums</th>
+                    <th>Claims</th>
+                    <th>Admin</th>
+                    <th>Acq</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="(value, index) in formDataReinsurance.Premiums" :key="index">
+                    <tr>
+                        <td><input x-model="formDataReinsurance.Premiums[index]" type="text"></td>
+                        <td><input x-model="formDataReinsurance.Claims[index]" type="text"></td>
+                        <td><input x-model="formDataReinsurance.Admin[index]" type="text"></td>
+                        <td><input x-model="formDataReinsurance.Acq[index]" type="text"></td>
+                        <td><button type="button" @click="removeRowReinsurance(index)">Remove</button></td>
+                    </tr>
+                </template>
+                <tr>
+                    <td><input type="text" x-model="newValuesReinsurance.Premiums" placeholder="Enter Premiums"></td>
+                    <td><input type="text" x-model="newValuesReinsurance.Claims" placeholder="Enter Claims"></td>
+                    <td><input type="text" x-model="newValuesReinsurance.Admin" placeholder="Enter Admin"></td>
+                    <td><input type="text" x-model="newValuesReinsurance.Acq" placeholder="Enter Acq"></td>
+                    <td><button type="button" @click="addRowReinsurance()">Add Row</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="mt-4">
+            <button @click="submitReinsuranceData()" class="btn btn-primary">Update Reinsurance Data</button>
+        </div>
+    </div>
+</body>
+
+</html>

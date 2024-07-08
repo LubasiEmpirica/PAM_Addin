@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empirica Actuaries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your separate CSS file -->
+</head>
+
+<body class="bg-gray-200 p-4">
+    <div x-data="{ 
+        columns: [
+            'PrevRun_Nr', 'NBRun_Nr', 'Run_Nr', 'Run_Description', 
+            'ForwardInterestRatesName_IFstart', 'ForwardInterestRatesName_IFend', 
+            'ForwardInterestRatesName_NB', 'EconomicAssumptionsName', 
+            'RiskAdj', 'RiskAdjustmentFac', 'IncurredAcqCotsPeriod'
+        ],
+        formData: {},
+        runData: [],
+        loadData() {
+            try {
+                const storedData = localStorage.getItem('formData');
+                if (storedData) {
+                    this.formData = JSON.parse(storedData);
+                }
+            } catch (e) {
+                alert('Error loading data from localStorage: ' + e.message);
+            }
+        },
+        submitData() {
+            fetch('http://localhost:5000/submit-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Data submitted successfully');
+                // Replace with appropriate handling for your environment
+            })
+            .catch(error => {
+                alert('Error submitting data: ' + error.message);
+            });
+        },
+        inspectData() {
+            fetch('http://localhost:5000/get-inspect-data')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch data');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    this.runData = data; // Assuming the response is an array of objects
+                })
+                .catch(error => {
+                    console.error('Error loading run data:', error);
+                    alert('Error loading run data');
+                });
+        },
+        removeRow(index) {
+            for (let key in this.formData) {
+                this.formData[key].splice(index, 1);
+            }
+        },
+        saveData() {
+            try {
+                localStorage.setItem('formData', JSON.stringify(this.formData));
+                alert('Data saved successfully!');
+            } catch (e) {
+                alert('Error saving data to localStorage: ' + e.message);
+            }
+        }
+    }" x-init="loadData()">
+        <div class="form-container">
+            <h2 id="title">Assumption Manager</h2>
+            <template x-for="(column, index) in columns" :key="index">
+                <div class="field">
+                    <label x-text="column"></label>
+                    <input x-model="formData[column]" type="text">
+                </div>
+            </template>
+        </div>
+
+        <div class="mt-4">
+            <button @click="saveData()" class="btn btn-primary">Save Data</button>
+            <button @click="submitData()" class="btn btn-primary">Submit Data</button>
+            <button @click="inspectData()" class="btn btn-primary">Inspect</button>
+        </div>
+
+        <!-- Display run data -->
+<div class="mt-4" x-show="runData.length > 0">
+    <h3>Run Data</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>PrevRun_Nr</th>
+                <th>NBRun_Nr</th>
+                <th>Run_Nr</th>
+                <th>Run_Description</th>
+                <th>ForwardInterestRatesName_IFstart</th>
+                <th>ForwardInterestRatesName_IFend</th>
+                <th>ForwardInterestRatesName_NB</th>
+                <th>EconomicAssumptionsName</th>
+                <th>RiskAdj</th>
+                <th>RiskAdjustmentFac</th>
+                <th>IncurredAcqCotsPeriod</th>
+                <th>Actions</th> <!-- Add a column for actions -->
+            </tr>
+        </thead>
+        <tbody>
+            <template x-for="(entry, dataIndex) in runData" :key="dataIndex">
+                <tr>
+                    <td><input x-model="entry.PrevRun_Nr" type="text"></td>
+                    <td><input x-model="entry.NBRun_Nr" type="text"></td>
+                    <td><input x-model="entry.Run_Nr" type="text"></td>
+                    <td><input x-model="entry.Run_Description" type="text"></td>
+                    <td><input x-model="entry.ForwardInterestRatesName_IFstart" type="text"></td>
+                    <td><input x-model="entry.ForwardInterestRatesName_IFend" type="text"></td>
+                    <td><input x-model="entry.ForwardInterestRatesName_NB" type="text"></td>
+                    <td><input x-model="entry.EconomicAssumptionsName" type="text"></td>
+                    <td><input x-model="entry.RiskAdj" type="text"></td>
+                    <td><input x-model="entry.RiskAdjustmentFac" type="text"></td>
+                    <td><input x-model="entry.IncurredAcqCotsPeriod" type="text"></td>
+                    <td>
+                        <button @click="saveChanges(dataIndex)" class="btn btn-primary">Save Changes</button>
+                    </td>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+</div>
+    </div>
+    
+</body>
+
+</html>

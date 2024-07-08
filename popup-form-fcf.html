@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance and Reinsurance Variables</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+  
+    <!-- Alpine.js CDN -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="fcfstyles.css">
+</head>
+
+<body>
+    <h1>Insurance and Reinsurance Variables</h1>
+
+    <div x-data="{
+        formType: 'insurance', // Tracks whether 'insurance' or 'reinsurance' form is active
+        formData: {
+            'insurance': {
+                'Premiums': [], // Array to store insurance premiums
+                'Claims': [],   // Array to store insurance claims
+                'Admin': [],    // Array to store insurance administrative costs
+                'Acq': []       // Array to store insurance acquisition costs
+            },
+            'reinsurance': {
+                'Premiums': [], // Array to store reinsurance premiums
+                'Claims': [],   // Array to store reinsurance claims
+                'Admin': [],    // Array to store reinsurance administrative costs
+                'Acq': []       // Array to store reinsurance acquisition costs
+            }
+        },
+        newValues: {
+            'insurance': {
+                'Premiums': '', // Holds new insurance premiums to add
+                'Claims': '',   // Holds new insurance claims to add
+                'Admin': '',    // Holds new insurance administrative costs to add
+                'Acq': ''       // Holds new insurance acquisition costs to add
+            },
+            'reinsurance': {
+                'Premiums': '', // Holds new reinsurance premiums to add
+                'Claims': '',   // Holds new reinsurance claims to add
+                'Admin': '',    // Holds new reinsurance administrative costs to add
+                'Acq': ''       // Holds new reinsurance acquisition costs to add
+            }
+        },
+        // Function to fetch initial form data from the backend
+        loadFormData(type) {
+            fetch(`http://localhost:5000/get-${type}-data`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch ${type} data`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Populate form data arrays with fetched data
+                    this.formData[type].Premiums = data.Premiums;
+                    this.formData[type].Claims = data.Claims;
+                    this.formData[type].Admin = data.Admin;
+                    this.formData[type].Acq = data.Acq;
+                })
+                .catch(error => {
+                    console.error(`Error loading ${type} data:`, error);
+                });
+        },
+        // Function to add a new row to the specified form type
+        addRow(type) {
+            this.formData[type].Premiums.push(this.newValues[type].Premiums);
+            this.formData[type].Claims.push(this.newValues[type].Claims);
+            this.formData[type].Admin.push(this.newValues[type].Admin);
+            this.formData[type].Acq.push(this.newValues[type].Acq);
+            // Clear newValues after adding row
+            this.newValues[type].Premiums = '';
+            this.newValues[type].Claims = '';
+            this.newValues[type].Admin = '';
+            this.newValues[type].Acq = '';
+        },
+        // Function to remove a row from the specified form type
+        removeRow(type, index) {
+            this.formData[type].Premiums.splice(index, 1);
+            this.formData[type].Claims.splice(index, 1);
+            this.formData[type].Admin.splice(index, 1);
+            this.formData[type].Acq.splice(index, 1);
+        },
+        // Function to submit form data to update backend
+        submitData(type) {
+            fetch(`http://localhost:5000/update-${type}-data`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(this.formData[type])
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok for ${type}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(`${type.charAt(0).toUpperCase() + type.slice(1)} data updated successfully`);
+                console.log(data); // Optional: Log the response data
+            })
+            .catch(error => {
+                alert(`Error updating ${type} data: ${error.message}`);
+                console.error('Error:', error);
+            });
+        }
+    }" x-init="loadFormData('insurance'); loadFormData('reinsurance')">
+        <!-- Rest of the HTML content remains unchanged -->
+    
+        <!-- Toggle Buttons to switch between Insurance and Reinsurance forms -->
+        <div>
+            <button @click="formType = 'insurance'">Insurance Form</button>
+            <button @click="formType = 'reinsurance'">Reinsurance Form</button>
+        </div>
+
+        <!-- Insurance Form -->
+        <div x-show="formType === 'insurance'">
+            <h2>Insurance Variables</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Premiums</th>
+                        <th>Claims</th>
+                        <th>Admin</th>
+                        <th>Acq</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through insurance form data -->
+                    <template x-for="(value, index) in formData.insurance.Premiums" :key="index">
+                        <tr>
+                            <td><input x-model="formData.insurance.Premiums[index]" type="text"></td>
+                            <td><input x-model="formData.insurance.Claims[index]" type="text"></td>
+                            <td><input x-model="formData.insurance.Admin[index]" type="text"></td>
+                            <td><input x-model="formData.insurance.Acq[index]" type="text"></td>
+                            <td><button type="button" @click="removeRow('insurance', index)">Remove</button></td>
+                        </tr>
+                    </template>
+                    <!-- Input fields to add a new row -->
+                    <tr>
+                        <td><input type="text" x-model="newValues.insurance.Premiums" placeholder="Enter Premiums"></td>
+                        <td><input type="text" x-model="newValues.insurance.Claims" placeholder="Enter Claims"></td>
+                        <td><input type="text" x-model="newValues.insurance.Admin" placeholder="Enter Admin"></td>
+                        <td><input type="text" x-model="newValues.insurance.Acq" placeholder="Enter Acq"></td>
+                        <td><button type="button" @click="addRow('insurance')">Add Row</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Button to submit insurance form data -->
+            <div class="mt-4">
+                <button @click="submitData('insurance')" class="btn btn-primary">Update Insurance Data</button>
+            </div>
+        </div>
+
+        <!-- Reinsurance Form -->
+        <div x-show="formType === 'reinsurance'">
+            <h2>Reinsurance Variables</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Premiums</th>
+                        <th>Claims</th>
+                        <th>Admin</th>
+                        <th>Acq</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through reinsurance form data -->
+                    <template x-for="(value, index) in formData.reinsurance.Premiums" :key="index">
+                        <tr>
+                            <td><input x-model="formData.reinsurance.Premiums[index]" type="text"></td>
+                            <td><input x-model="formData.reinsurance.Claims[index]" type="text"></td>
+                            <td><input x-model="formData.reinsurance.Admin[index]" type="text"></td>
+                            <td><input x-model="formData.reinsurance.Acq[index]" type="text"></td>
+                            <td><button type="button" @click="removeRow('reinsurance', index)">Remove</button></td>
+                        </tr>
+                    </template>
+                    <!-- Input fields to add a new row -->
+                    <tr>
+                        <td><input type="text" x-model="newValues.reinsurance.Premiums" placeholder="Enter Premiums"></td>
+                        <td><input type="text" x-model="newValues.reinsurance.Claims" placeholder="Enter Claims"></td>
+                        <td><input type="text" x-model="newValues.reinsurance.Admin" placeholder="Enter Admin"></td>
+                        <td><input type="text" x-model="newValues.reinsurance.Acq" placeholder="Enter Acq"></td>
+                        <td><button type="button" @click="addRow('reinsurance')">Add Row</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Button to submit reinsurance form data -->
+            <div class="mt-4">
+                <button @click="submitData('reinsurance')" class="btn btn-primary">Update Reinsurance Data</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

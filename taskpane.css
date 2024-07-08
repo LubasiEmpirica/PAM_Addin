@@ -1,0 +1,60 @@
+/* Reset default margin and padding */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: white; /* Background color */
+    
+}
+
+/* Center content */
+.ms-textAlignCenter {
+    text-align: center;
+}
+
+/* Optional: Adjust image size or other styles as needed */
+.ms-welcome__main img {
+    width: 320px;
+    height: 110px;
+    margin-bottom: 10px; /* Adjust spacing below the image */
+   }
+
+.ms-welcome__main h1 {
+    font-size: 25px; /* Adjusted font size for the Welcome heading */
+    color: black;
+    /* font-weight: bold; */
+}
+
+.ms-font-su {
+    margin-bottom: 10px; /* Adjust spacing below the Welcome text */
+}
+
+/* Button styles */
+#openFormButton {
+    background-color: #a0972e; /* Button color */
+    color: #fff; /* Text color */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 120px; /* Optional: set fixed width */
+    height: 35px; /* Optional: set fixed height */
+    margin-top: 20px; /* Adjust top margin of the button */
+}
+
+#openFormButton:hover {
+    background-color: #8c8130; /* Darker shade on hover */
+}
+
+#openFCFButton {
+    background-color: #a0972e; /* Button color */
+    color: #fff; /* Text color */
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 12px;
+    width: 120px; /* Optional: set fixed width */
+    height: 35px; /* Optional: set fixed height */
+    margin-top: 20px; /* Adjust top margin of the button */
+}
