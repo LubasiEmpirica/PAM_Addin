@@ -15,7 +15,7 @@ Office.onReady((info) => {
 
 function openDataForm() {
   Office.context.ui.displayDialogAsync(
-    "https://localhost:3000/popup-form.html",
+    "https://lubasiempirica.github.io/PAM_Addin/popup-form.html",
     { height: 80, width: 50 },
     function (asyncResult) {
       var dialog = asyncResult.value;
@@ -26,7 +26,7 @@ function openDataForm() {
 
 function openFCFForm() {
   Office.context.ui.displayDialogAsync(
-    "https://localhost:3000/popup-form-fcf.html",
+    "https://lubasiempirica.github.io/PAM_Addin/popup-form-fcf.html",
     { height: 80, width: 50 },
     function (asyncResult) {
       var dialog = asyncResult.value;
