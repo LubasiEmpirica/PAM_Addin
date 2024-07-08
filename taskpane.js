@@ -10,8 +10,8 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     document.getElementById("openFormButton").onclick = openDataForm;
     document.getElementById("openFCFButton").onclick = openFCFForm;
-   
-};
+  }
+});
 
 function openDataForm() {
   Office.context.ui.displayDialogAsync(
@@ -34,7 +34,6 @@ function openFCFForm() {
     }
   );
 }
-
 function messageHandler(arg) {
   console.log(arg.message);
   // You can handle the message from the dialog box here
