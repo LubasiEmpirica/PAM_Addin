@@ -10,12 +10,15 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     document.getElementById("openFormButton").onclick = openDataForm;
     document.getElementById("openFCFButton").onclick = openFCFForm;
+    window.showTaskpane = function() {
+      Office.context.ui.displayDialogAsync('https://lubasiempirica.github.io/PAM_Addin/taskpane.html', { height: 50, width: 50 });
+
   }
 });
 
 function openDataForm() {
   Office.context.ui.displayDialogAsync(
-    "https://lubasiempirica.github.io/PAM_Addin/popup-form.html",
+    "https://localhost:3000/popup-form.html",
     { height: 80, width: 50 },
     function (asyncResult) {
       var dialog = asyncResult.value;
@@ -26,7 +29,7 @@ function openDataForm() {
 
 function openFCFForm() {
   Office.context.ui.displayDialogAsync(
-    "https://lubasiempirica.github.io/PAM_Addin/popup-form-fcf.html",
+    "https://localhost:3000/popup-form-fcf.html",
     { height: 80, width: 50 },
     function (asyncResult) {
       var dialog = asyncResult.value;
@@ -34,6 +37,11 @@ function openFCFForm() {
     }
   );
 }
+
+function showTaskpane() {
+  Office.context.ui.displayDialogAsync('https://lubasiempirica.github.io/PAM_Addin/taskpane.html', { height: 50, width: 50 });
+}
+
 function messageHandler(arg) {
   console.log(arg.message);
   // You can handle the message from the dialog box here
