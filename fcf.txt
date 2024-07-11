@@ -31,7 +31,7 @@
             'Acq': ''
         },
         loadFormDataInsurance() {
-            fetch('http://localhost:5000/get-insurance-data')
+            fetch('https://pam1000-zkekojo2lq-uc.a.run.app/get-insurance-data')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch insurance data');
@@ -66,7 +66,7 @@
             this.formDataInsurance.Acq.splice(index, 1);
         },
         submitInsuranceData() {
-            fetch('http://localhost:5000/update-insurance-data', {
+            fetch('https://pam1000-zkekojo2lq-uc.a.run.app/update-insurance-data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -139,7 +139,7 @@
             'Acq': ''
         },
         loadFormDataReinsurance() {
-            fetch('http://localhost:5000/get-reinsurance-data')
+            fetch('https://pam1000-zkekojo2lq-uc.a.run.app/get-reinsurance-data')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch reinsurance data');
@@ -174,7 +174,7 @@
             this.formDataReinsurance.Acq.splice(index, 1);
         },
         submitReinsuranceData() {
-            fetch('http://localhost:5000/update-reinsurance-data', {
+            fetch('https://pam1000-zkekojo2lq-uc.a.run.app/update-reinsurance-data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

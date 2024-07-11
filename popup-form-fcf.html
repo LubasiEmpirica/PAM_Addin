@@ -8,8 +8,10 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
-  
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap"
+        rel="stylesheet">
+
     <!-- Alpine.js CDN -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Custom CSS -->
@@ -51,7 +53,7 @@
         },
         // Function to fetch initial form data from the backend
         loadFormData(type) {
-            fetch(`http://localhost:5000/get-${type}-data`)
+            fetch(`https://pam1000-zkekojo2lq-uc.a.run.app/get-${type}-data`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Failed to fetch ${type} data`);
@@ -90,7 +92,7 @@
         },
         // Function to submit form data to update backend
         submitData(type) {
-            fetch(`http://localhost:5000/update-${type}-data`, {
+            fetch(`https://pam1000-zkekojo2lq-uc.a.run.app/update-${type}-data`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -114,7 +116,7 @@
         }
     }" x-init="loadFormData('insurance'); loadFormData('reinsurance')">
         <!-- Rest of the HTML content remains unchanged -->
-    
+
         <!-- Toggle Buttons to switch between Insurance and Reinsurance forms -->
         <div>
             <button @click="formType = 'insurance'">Insurance Form</button>
@@ -187,7 +189,8 @@
                     </template>
                     <!-- Input fields to add a new row -->
                     <tr>
-                        <td><input type="text" x-model="newValues.reinsurance.Premiums" placeholder="Enter Premiums"></td>
+                        <td><input type="text" x-model="newValues.reinsurance.Premiums" placeholder="Enter Premiums">
+                        </td>
                         <td><input type="text" x-model="newValues.reinsurance.Claims" placeholder="Enter Claims"></td>
                         <td><input type="text" x-model="newValues.reinsurance.Admin" placeholder="Enter Admin"></td>
                         <td><input type="text" x-model="newValues.reinsurance.Acq" placeholder="Enter Acq"></td>

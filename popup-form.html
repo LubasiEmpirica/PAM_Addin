@@ -7,7 +7,9 @@
     <title>Empirica Actuaries</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:ital,wght@0,400..700;1,400..700&family=Noto+Sans+JP:wght@100..900&display=swap"
+        rel="stylesheet">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="styles.css"> <!-- Link to your separate CSS file -->
 </head>
@@ -33,7 +35,7 @@
             }
         },
         submitData() {
-            fetch('http://localhost:5000/submit-data', {
+            fetch('https://pam1000-zkekojo2lq-uc.a.run.app/submit-data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -50,7 +52,7 @@
             });
         },
         inspectData() {
-            fetch('http://localhost:5000/get-inspect-data')
+            fetch('https://pam1000-zkekojo2lq-uc.a.run.app/get-inspect-data')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Failed to fetch data');
@@ -96,49 +98,49 @@
         </div>
 
         <!-- Display run data -->
-<div class="mt-4" x-show="runData.length > 0">
-    <h3>Run Data</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>PrevRun_Nr</th>
-                <th>NBRun_Nr</th>
-                <th>Run_Nr</th>
-                <th>Run_Description</th>
-                <th>ForwardInterestRatesName_IFstart</th>
-                <th>ForwardInterestRatesName_IFend</th>
-                <th>ForwardInterestRatesName_NB</th>
-                <th>EconomicAssumptionsName</th>
-                <th>RiskAdj</th>
-                <th>RiskAdjustmentFac</th>
-                <th>IncurredAcqCotsPeriod</th>
-                <th>Actions</th> <!-- Add a column for actions -->
-            </tr>
-        </thead>
-        <tbody>
-            <template x-for="(entry, dataIndex) in runData" :key="dataIndex">
-                <tr>
-                    <td><input x-model="entry.PrevRun_Nr" type="text"></td>
-                    <td><input x-model="entry.NBRun_Nr" type="text"></td>
-                    <td><input x-model="entry.Run_Nr" type="text"></td>
-                    <td><input x-model="entry.Run_Description" type="text"></td>
-                    <td><input x-model="entry.ForwardInterestRatesName_IFstart" type="text"></td>
-                    <td><input x-model="entry.ForwardInterestRatesName_IFend" type="text"></td>
-                    <td><input x-model="entry.ForwardInterestRatesName_NB" type="text"></td>
-                    <td><input x-model="entry.EconomicAssumptionsName" type="text"></td>
-                    <td><input x-model="entry.RiskAdj" type="text"></td>
-                    <td><input x-model="entry.RiskAdjustmentFac" type="text"></td>
-                    <td><input x-model="entry.IncurredAcqCotsPeriod" type="text"></td>
-                    <td>
-                        <button @click="saveChanges(dataIndex)" class="btn btn-primary">Save Changes</button>
-                    </td>
-                </tr>
-            </template>
-        </tbody>
-    </table>
-</div>
+        <div class="mt-4" x-show="runData.length > 0">
+            <h3>Run Data</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>PrevRun_Nr</th>
+                        <th>NBRun_Nr</th>
+                        <th>Run_Nr</th>
+                        <th>Run_Description</th>
+                        <th>ForwardInterestRatesName_IFstart</th>
+                        <th>ForwardInterestRatesName_IFend</th>
+                        <th>ForwardInterestRatesName_NB</th>
+                        <th>EconomicAssumptionsName</th>
+                        <th>RiskAdj</th>
+                        <th>RiskAdjustmentFac</th>
+                        <th>IncurredAcqCotsPeriod</th>
+                        <th>Actions</th> <!-- Add a column for actions -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="(entry, dataIndex) in runData" :key="dataIndex">
+                        <tr>
+                            <td><input x-model="entry.PrevRun_Nr" type="text"></td>
+                            <td><input x-model="entry.NBRun_Nr" type="text"></td>
+                            <td><input x-model="entry.Run_Nr" type="text"></td>
+                            <td><input x-model="entry.Run_Description" type="text"></td>
+                            <td><input x-model="entry.ForwardInterestRatesName_IFstart" type="text"></td>
+                            <td><input x-model="entry.ForwardInterestRatesName_IFend" type="text"></td>
+                            <td><input x-model="entry.ForwardInterestRatesName_NB" type="text"></td>
+                            <td><input x-model="entry.EconomicAssumptionsName" type="text"></td>
+                            <td><input x-model="entry.RiskAdj" type="text"></td>
+                            <td><input x-model="entry.RiskAdjustmentFac" type="text"></td>
+                            <td><input x-model="entry.IncurredAcqCotsPeriod" type="text"></td>
+                            <td>
+                                <button @click="saveChanges(dataIndex)" class="btn btn-primary">Save Changes</button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
     </div>
-    
+
 </body>
 
 </html>
